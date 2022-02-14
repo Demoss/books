@@ -1,8 +1,9 @@
-module books
+module github.com/Demoss/books
 
 go 1.16
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.7.4
 	github.com/golang-migrate/migrate/v4 v4.15.1
 	github.com/jmoiron/sqlx v1.3.4

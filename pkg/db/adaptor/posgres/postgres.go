@@ -1,12 +1,8 @@
-package repository
+package posgres
 
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
-)
-
-const (
-	booksTable = "books"
 )
 
 type Config struct {

@@ -1,11 +1,12 @@
 package main
 
 import (
-	"books"
-	"books/pkg/handler"
-	"books/pkg/repository"
-	"books/pkg/service"
 	"context"
+	"github.com/Demoss/books"
+	"github.com/Demoss/books/internal/handler"
+	"github.com/Demoss/books/internal/repository"
+	"github.com/Demoss/books/internal/service"
+	"github.com/Demoss/books/pkg/db/adaptor/posgres"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -34,7 +35,7 @@ func run() error {
 		logrus.Fatalf("error loading env variables: %s", err.Error())
 	}
 
-	db, err := repository.NewPostgresDB(repository.Config{
+	db, err := posgres.NewPostgresDB(posgres.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
 		Username: viper.GetString("db.username"),
@@ -57,13 +58,13 @@ func run() error {
 		}
 	}()
 
-	logrus.Print("TodoApp Started")
+	logrus.Info("App Started")
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 	<-quit
 
-	logrus.Print("TodoApp Shutting Down")
+	logrus.Info("App Shutting Down")
 
 	if err := srv.Shutdown(context.Background()); err != nil {
 		logrus.Errorf("error occured on server shutting down: %s", err.Error())

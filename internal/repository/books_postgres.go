@@ -1,6 +1,8 @@
 package repository
 
-import "github.com/jmoiron/sqlx"
+import (
+	"github.com/jmoiron/sqlx"
+)
 
 type BooksPostgres struct {
 	db *sqlx.DB

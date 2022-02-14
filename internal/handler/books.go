@@ -1,6 +1,10 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
+
+const booksCtx = "bookID"
 
 func (h *Handler) createBook(c *gin.Context) {
 

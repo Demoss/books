@@ -1,6 +1,8 @@
 package service
 
-import "books/pkg/repository"
+import (
+	"github.com/Demoss/books/internal/repository"
+)
 
 type BooksService struct {
 	repo repository.Books

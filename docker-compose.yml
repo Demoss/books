@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  books:
+    build: ./
+    command: ./wait-postgres.sh db ./books
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=qwerty
+
+  db:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - ./.database/postgres/data:/var/lob/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=qwerty
+    ports:
+      - 5432:5432
+  migrate:
+    image: migrate/migrate
+    networks:
+      - new
+    volumes:
+      - .:/migrations
+    command: [ "-path", "/migrations", "-database",  "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable", "up", "3" ]
+    links:
+      - db
+networks:
+  new:

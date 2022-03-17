@@ -1,4 +1,4 @@
-package handler
+package delivery
 
 import (
 	"github.com/Demoss/books/internal/service"
@@ -28,12 +28,12 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	api := router.Group("/api")
 	{
-		books := api.Group("/books", h.userIdentity)
+		books := api.Group("/books")
 		{
-			books.GET("/", h.getAllBooks)
-			books.POST("/", h.createBook)
+			books.POST("/by-author", h.getAuthorsBooks)
+			books.POST("/", h.addBook)
 			books.PUT("/:id", h.updateBook)
-			books.DELETE("/:id", h.deleteBook)
+			books.DELETE("/delete-book", h.deleteBook)
 		}
 	}
 

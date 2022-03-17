@@ -12,6 +12,9 @@ type Authorization interface {
 }
 
 type Books interface {
+	AddBook(book domain.Book) error
+	GetAuthorsBooks(author domain.Author) ([]domain.Book, error)
+	DeleteBook(book domain.Book) error
 }
 
 type Service struct {

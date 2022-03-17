@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"github.com/Demoss/books"
-	"github.com/Demoss/books/internal/handler"
+	"github.com/Demoss/books/internal/delivery"
 	"github.com/Demoss/books/internal/repository"
 	"github.com/Demoss/books/internal/service"
 	"github.com/Demoss/books/pkg/db/adaptor/posgres"
@@ -49,7 +49,7 @@ func run() error {
 
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
-	handlers := handler.NewHandler(services)
+	handlers := delivery.NewHandler(services)
 
 	srv := new(books.Server)
 	go func() {

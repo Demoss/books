@@ -6,10 +6,15 @@ import (
 )
 
 const (
-	users = "users"
+	users   = "users"
+	books   = "books"
+	authors = "authors"
 )
 
 type Books interface {
+	AddBook(book domain.Book) error
+	GetAuthorsBooks(author domain.Author) ([]domain.Book, error)
+	DeleteBook(book domain.Book) error
 }
 
 type Authorization interface {

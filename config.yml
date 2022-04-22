@@ -1,0 +1,9 @@
+port: "8000"
+
+mongodb:
+  host: localhost
+  port: 27017
+  database: eth
+  auth_db:
+  username:
+  password:

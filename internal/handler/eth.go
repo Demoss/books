@@ -24,7 +24,7 @@ func (h *Handler) GetInfoByBlock(c *gin.Context) {
 
 	url := fmt.Sprintf("https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=%v&boolean=true&apikey=%v", hexInt, os.Getenv("apiKey"))
 
-	res, err := http.Get(url)
+	request, err := http.Get(url)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -32,25 +32,30 @@ func (h *Handler) GetInfoByBlock(c *gin.Context) {
 
 	var transactionsBlock query.BlockByNumber
 
-	err = json.NewDecoder(res.Body).Decode(&transactionsBlock)
+	err = json.NewDecoder(request.Body).Decode(&transactionsBlock)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	a, err := h.services.Eth.GetInfoAboutBlock(c, transactionsBlock)
+	resp, err := h.services.Eth.GetInfoAboutBlock(c, transactionsBlock)
 	if err != nil {
 		logrus.Errorf("data didn`t save due to error: %v", err)
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	logrus.Infof("data successfully add")
+	logrus.Infof("data successfully displayed")
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"transactions": a.Transactions,
-		"amount":       a.Count,
+	c.JSON(http.StatusOK, response{
+		Transactions: resp.Transactions,
+		Count:        resp.Count,
 	})
+}
+
+type response struct {
+	Transactions int     `json:"transactions"`
+	Count        float64 `json:"count"`
 }
 
 func decimalToHex(block int) string {
